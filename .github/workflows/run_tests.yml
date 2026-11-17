@@ -1,3 +1,9 @@
+# Optimized by ci-cost (https://github.com/mariotavarez/ci-cost)
+# Applied 2 optimizations:
+# - [MEDIUM] Add concurrency group to "run_tests.yml"
+# - [LOW] Explicitly set fail-fast for large matrix job "unittests" (9 combinations)
+# Estimated savings: ~4 min/run
+#
 # This workflow will install Python dependencies, run tests and lint with a variety of Python versions
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
 
@@ -12,6 +18,10 @@ on:
      - cron: "15 0 1,6,11,16,21,26 * *"
   workflow_dispatch:
   
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   unittests:
     defaults:
